@@ -1,0 +1,63 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Datasets & Checkpoints (large files out of Git)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Checkpoints and runs
+runs/*
+!runs/.gitkeep
+checkpoints/
+*.pt
+*.pth
+*.onnx
+*.bin
+
+# Reports / artifacts generated
+reports/results/*
+!reports/results/.gitkeep
+reports/error_gallery/*
+!reports/error_gallery/.gitkeep
+
+# System / OS
+.DS_Store
+Thumbs.db
