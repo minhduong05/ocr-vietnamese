@@ -68,7 +68,6 @@ Thumbs.db
 /VietHTR-line/
 *.arrow
 *.zip
-/output/
 /tmp/
 /.cache/
 .pytest_cache/
