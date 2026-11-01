@@ -61,3 +61,30 @@ reports/error_gallery/*
 # System / OS
 .DS_Store
 Thumbs.db
+
+/data/
+
+# Team workflow: generated artifacts/caches stay local.
+/VietHTR-line/
+*.arrow
+*.zip
+/output/
+/tmp/
+/.cache/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Local authentication and scratch probes (existing files are preserved).
+.env
+.env.*
+!.env.example
+*.secrets.json
+/login.py
+/file.py
+/sample.png
+
+# Frontend/backend local build output.
+node_modules/
+dist/
+.next/

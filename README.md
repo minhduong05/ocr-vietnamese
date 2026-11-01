@@ -1,46 +1,56 @@
-# Vietnamese OCR Project (ocr-vietnamese)
+# Nhóm 11 - OCR tiếng Việt
 
-Dự án nhận dạng chữ tiếng Việt (Vietnamese Optical Character Recognition) phục vụ nghiên cứu và huấn luyện mô hình học sâu.
+Theo [slide đề xuất](docs/proposal/Nhom11_De_xuat_OCR.pptx): so sánh CRNN, Transformer,
+Sparse MoE trên chữ in; chọn một model để fine-tune chữ viết tay, sau đó tích hợp demo.
 
-## Cấu trúc thư mục
+## Cấu trúc
 
 ```text
-ocr-vietnamese/
-  README.md
-  requirements.in
-  requirements-lock.txt
-  configs/
-    data/
-    crnn/
-    dense/
-    moe/
-    experiments/
-  src/
-    data/           # manifest.py, dataset.py, collate.py, sampler.py, transforms.py
-    text/           # normalize.py, vocab.py, ctc_codec.py, ar_codec.py
-    models/         # cnn.py, crnn.py, dense_transformer.py, sparse_moe.py
-    training/       # engine.py, losses.py, checkpoint.py, scheduler.py
-    decoding/       # ctc_greedy.py, ctc_beam.py, ar_greedy.py, ar_beam.py
-    evaluation/     # metrics.py, evaluator.py, latency.py, error_analysis.py
-  scripts/          # prepare_data.py, train.py, evaluate.py, benchmark.py, export_predictions.py
-  tools/
-    data/           # import_uit.py, import_vintext.py, import_mcocr.py, render_vnondb.py
-                    # audit.py, split.py, deduplicate.py, generate_synthetic.py
-  tests/            # test_data.py, test_codec.py, test_ctc.py, test_masks.py, test_moe.py
-  data/
-    raw/            # Dữ liệu thô tải về (ngoài Git)
-    processed/      # Dữ liệu sau xử lý / cắt dòng (ngoài Git)
-    manifests/      # Manifest jsonl / csv phục vụ nạp dữ liệu
-    vocab/          # Bộ từ vựng / bảng chữ cái tiếng Việt
-  runs/             # Log huấn luyện, metrics, predictions, checkpoints theo từng run_id
-  reports/
-    dataset_card/
-    experiment_registry/
-    results/
-    error_gallery/
+src/
+  common/                  # Phần dùng chung
+    data.py                # Đọc dữ liệu
+    preprocess.py          # Tiền xử lý ảnh và nhãn
+    metrics.py             # CER, WER, exact match
+  models/
+    crnn/                  # Người phụ trách CRNN
+      model.py
+      train.py
+      config.yaml
+    transformer/           # Người phụ trách Transformer
+      model.py
+      train.py
+      config.yaml
+    sparse_moe/            # Người phụ trách Sparse MoE
+      model.py
+      router.py            # Top-1, 3 expert theo đề xuất
+      train.py
+      config.yaml
+  pipeline/
+    detector.py            # Detector pretrained và cắt dòng
+    recognizer.py          # Nhận dạng dòng, ghép đoạn văn
+scripts/
+  prepare_data.py
+  finetune.py               # Fine-tune model được chọn
+  evaluate.py
+  build_eda_pdf_report.py   # Mã tạo PDF đã có
+configs/data.yaml          # Cấu hình dữ liệu chung
+apps/api/main.py           # Backend FastAPI
+apps/web/                  # Frontend React
+notebooks/eda/             # Hai notebook EDA đã có
+docs/proposal/             # Slide đề xuất
+data/                      # Dataset local, ngoài Git
+runs/                      # Checkpoint và log local, ngoài Git
+reports/                   # Các kết quả phân tích đã có
+output/pdf/                # Báo cáo PDF đã tạo
 ```
 
-## Lưu ý về Quản lý Dữ liệu và Mã nguồn
-- **Dataset và Checkpoints**: Các tệp dung lượng lớn đặt ngoài Git (đã được cấu hình trong `.gitignore`).
-- **Git Repository**: Chỉ lưu mã nguồn, tệp cấu hình (configs), manifest được phép chia sẻ, mã băm kiểm tra (checksum) và tài liệu hướng dẫn tải dữ liệu.
-- **Giao diện CLI**: Các lệnh trong thư mục `scripts/` và `tools/` tạo thành giao diện CLI của dự án, nhóm tự xây dựng độc lập.
+## Cách chia việc
+
+- Ba người làm trong ba thư mục model riêng, bao gồm code train và config của mình.
+- Người làm dữ liệu/tích hợp phụ trách `common/`, `pipeline/` và các script chung.
+- Chốt cùng dữ liệu/split và cách tính metric để so sánh công bằng.
+- Mỗi người một nhánh Git; tránh sửa file của model khác. Thay đổi phần chung thì trao đổi trước.
+- Giữ checkpoint chữ in riêng; stage 2 chỉ fine-tune model được chọn trên ba nguồn viết tay.
+
+Các file khung mới chỉ có chú thích, chưa cài đặt model hoặc quy trình train.
+Dữ liệu, notebook EDA và báo cáo hiện có được giữ lại.
