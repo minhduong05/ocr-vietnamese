@@ -35,7 +35,7 @@ scripts/
   build_eda_pdf_report.py   # Mã tạo PDF đã có
 configs/data.yaml          # Cấu hình dữ liệu chung
 apps/api/main.py           # Backend FastAPI
-apps/web/                  # Frontend React
+apps/web/                  # Frontend Next.js (React), xem apps/web/README.md
 notebooks/eda/             # Hai notebook EDA đã có
 docs/proposal/             # Slide đề xuất
 data/                      # Dataset local, ngoài Git
@@ -54,3 +54,15 @@ output/pdf/                # Báo cáo PDF đã tạo
 
 Các file khung mới chỉ có chú thích, chưa cài đặt model hoặc quy trình train.
 Dữ liệu, notebook EDA và báo cáo hiện có được giữ lại.
+
+## Web demo
+
+Giao diện nhận dạng đoạn văn nằm ở `apps/web` (Next.js + TypeScript). Hiện chạy chế độ mô phỏng,
+chưa cần model; khi backend FastAPI sẵn sàng, đặt `NEXT_PUBLIC_OCR_API_URL` để nối vào.
+Hợp đồng API và cách chạy: [apps/web/README.md](apps/web/README.md).
+
+```bash
+cd apps/web
+npm install
+npm run dev   # http://localhost:3000
+```
